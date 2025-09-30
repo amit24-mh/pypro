@@ -6,7 +6,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 SECRET_KEY = "django-insecure-@kn(-0q39!)i2)ud+^8yf-*oy6(aw$=1l1@u(wcvxdqu9)2)o4"
 DEBUG = False
-ALLOWED_HOSTS = ['your-domain.com', 'www.your-domain.com']
+
+ALLOWED_HOSTS = ['your-app.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
