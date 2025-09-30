@@ -10,11 +10,10 @@ path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
 path('checkout/', views.checkout, name='checkout'),
 path('orders/', views.order_list, name='order_list'),
 ]
-from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import path
+from . import views   # relative import of views from the same folder
 
 urlpatterns = [
-path('admin/', admin.site.urls),
-path('', include('store.urls')),
+    path('', views.home, name='home'),  # example view
 ]
+
