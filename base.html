@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>E‑Commerce App</title>
+<link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+</head>
+<body>
+<header>
+<h1>My E‑Commerce Site</h1>
+<nav>
+<a href="/">Home</a> |
+<a href="/cart/">Cart</a> |
+<a href="/orders/">Orders</a>
+</nav>
+</header>
+<hr>
+{% block content %}{% endblock %}
+{% extends 'store/base.html' %}
+{% block content %}
+<h2>Products</h2>
+<ul>
+{% for product in products %}
+<li>
+<a href="/product/{{ product.slug }}/">{{ product.name }}</a>
+- ₹{{ product.price }}
+<a href="/cart/add/{{ product.id }}/">Add to cart</a>
+</li>
+{% endfor %}
+</ul>
+{% endblock %}
+{% extends 'store/base.html' %}
+{% block content %}
+<h2>{{ product.name }}</h2>
+<p>{{ product.description }}</p>
+<p>₹{{ product.price }}</p>
+<a href="/cart/add/{{ product.id }}/">Add to cart</a>
+{% endblock %}i
+{% extends 'store/base.html' %}
+{% block content %}
+<h2>Your Cart</h2>
+<ul>
+{% for item in items %}
+<li>{{ item.product.name }} x {{ item.quantity }} = ₹{{ item.subtotal }}</li>
+{% endfor %}
+</ul>
+<p>Total: ₹{{ total }}</p>
+<a href="/checkout/">Proceed to Checkout</a>
+{% endblock %}
+{% extends 'store/base.html' %}
+{% block content %}
+<h2>Checkout</h2>
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit">Place Order</button>
+</form>
+<p>Total: ₹{{ total }}</p>
+{% endblock %}
+{% extends 'store/base.html' %}
+{% block content %}
+<h2>Your Orders</h2>
+<ul>
+{% for order in orders %}
+<li>Order #{{ order.id }} - ₹{{ order.total_amount }} - {{ order.status }}
+({{ order.created_at }})
+</li>
+{% endfor %}
+</ul>
+{% endblock %}
+</body>
+</html>
