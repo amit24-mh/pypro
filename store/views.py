@@ -71,3 +71,9 @@ def checkout(request):
 def order_list(request):
     orders = Order.objects.filter(user=request.user)
     return render(request, 'store/orders.html', {'orders': orders})
+# Home page view
+def home(request):
+    # Redirect to product list or show some featured products
+    products = Product.objects.all()  # or filter for featured products
+    return render(request, 'store/home.html', {'products': products})
+
