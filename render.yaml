@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: django-app
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn my_django_project.wsgi:application"
+    postDeployCommand: "python manage.py migrate"
