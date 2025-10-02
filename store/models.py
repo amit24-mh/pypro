@@ -32,6 +32,7 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     added_at = models.DateTimeField(auto_now_add=True)
 
+    @property
     def subtotal(self):
         return self.quantity * self.product.price
 

@@ -1,10 +1,22 @@
 {% extends 'store/base.html' %}
 {% block content %}
 <h2>Checkout</h2>
+{% if cart_items %}
+<ul>
+  {% for item in cart_items %}
+    <li>{{ item.product.name }} x {{ item.quantity }} = ₹{{ item.subtotal }}</li>
+  {% endfor %}
+</ul>
+<p>Total: ₹{{ total }}</p>
+
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
+  <label>Full Name:</label><input type="text" name="full_name" required><br>
+  <label>Address:</label><textarea name="address" required></textarea><br>
+  <label>Phone:</label><input type="text" name="phone" required><br>
   <button type="submit">Place Order</button>
 </form>
-<p>Total: ₹{{ total }}</p>
+{% else %}
+<p>Your cart is empty.</p>
+{% endif %}
 {% endblock %}
