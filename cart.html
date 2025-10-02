@@ -1,0 +1,11 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<h2>Your Cart</h2>
+<ul>
+  {% for item in items %}
+    <li>{{ item.product.name }} x {{ item.quantity }} = ₹{{ item.subtotal }}</li>
+  {% endfor %}
+</ul>
+<p>Total: ₹{{ total }}</p>
+<a href="/checkout/">Proceed to Checkout</a>
+{% endblock %}
