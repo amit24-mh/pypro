@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 SECRET_KEY = "django-insecure-@kn(-0q39!)i2)ud+^8yf-*oy6(aw$=1l1@u(wcvxdqu9)2)o4"
 DEBUG = False
-ALLOWED_HOSTS = ['pypro-bt7k.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -47,6 +47,7 @@ TEMPLATES = [
             ],
         },
     },
+
 ]
 
 WSGI_APPLICATION = "mysite.wsgi.application"

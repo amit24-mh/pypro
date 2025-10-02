@@ -1,0 +1,16 @@
+{% extends 'store/base.html' %}
+{% block content %}
+<h2>Welcome to My E-Commerce Site</h2>
+<p>Browse our products below:</p>
+<ul>
+  {% for product in products %}
+    <li>
+      <a href="/product/{{ product.slug }}/">{{ product.name }}</a>
+      - ₹{{ product.price }}
+      <a href="/cart/add/{{ product.id }}/">Add to cart</a>
+    </li>
+  {% empty %}
+    <li>No products available yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
