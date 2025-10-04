@@ -1,7 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>E-Commerce App</title>
   <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
 </head>
@@ -14,7 +16,12 @@
       <a href="{% url 'order_list' %}">Orders</a>
     </nav>
   </header>
+
   <hr>
-  {% block content %}{% endblock %}
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
 </body>
 </html>
