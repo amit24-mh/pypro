@@ -1,9 +1,74 @@
 {% extends 'store/base.html' %}
 {% load static %}
-
 {% block content %}
-<h2>{{ product.name }}</h2>
-<p>{{ product.description }}</p>
-<p>₹{{ product.price }}</p>
-<a href="{% url 'add_to_cart' product.id %}">Add to cart</a>
+
+<div style="display:flex; flex-wrap:wrap; gap:30px; margin-top:20px;">
+
+  <!-- Product Image -->
+  <div style="flex:1; min-width:300px; text-align:center;">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px; height:300px; object-fit:contain; border:1px solid #e0e0e0; border-radius:10px;">
+    {% else %}
+      <img src="{% static 'images/logo.png' %}" alt="No Image" style="width:300px; height:300px; object-fit:contain; border:1px solid #e0e0e0; border-radius:10px;">
+    {% endif %}
+  </div>
+
+  <!-- Product Info -->
+  <div style="flex:2; min-width:300px;">
+    <h2 style="color:#2874f0;">{{ product.name }}</h2>
+    <p style="font-size:18px; font-weight:bold; color:#fb641b;">₹{{ product.price }}</p>
+    {% if product.color %}<p><strong>Color:</strong> {{ product.color }}</p>{% endif %}
+    {% if product.size %}<p><strong>Size:</strong> {{ product.size }}</p>{% endif %}
+    {% if product.weight %}<p><strong>Weight:</strong> {{ product.weight }} kg</p>{% endif %}
+    {% if product.warranty %}<p><strong>Warranty:</strong> {{ product.warranty }}</p>{% endif %}
+
+    <a href="{% url 'add_to_cart' product.id %}" 
+       style="display:inline-block; padding:10px 20px; background-color:#fb641b; color:white; border-radius:5px; text-decoration:none; margin-top:10px;">
+       Add to Cart
+    </a>
+  </div>
+</div>
+
+<!-- Product Tabs -->
+<div style="margin-top:40px; border-top:1px solid #ccc; padding-top:20px;">
+  <div style="display:flex; gap:20px; border-bottom:1px solid #ccc; margin-bottom:10px;">
+    <button onclick="showTab('description')" style="padding:10px 20px; border:none; background:#f7f7f7; cursor:pointer;" id="descTab">Description</button>
+    <button onclick="showTab('features')" style="padding:10px 20px; border:none; background:#f7f7f7; cursor:pointer;" id="featTab">Features</button>
+    <button onclick="showTab('warranty')" style="padding:10px 20px; border:none; background:#f7f7f7; cursor:pointer;" id="warrTab">Warranty</button>
+    <button onclick="showTab('specs')" style="padding:10px 20px; border:none; background:#f7f7f7; cursor:pointer;" id="specTab">Specifications</button>
+  </div>
+
+  <div id="description" class="tab-content" style="display:block; padding:10px 0;">
+    <p>{{ product.description|default:"No description available." }}</p>
+  </div>
+
+  <div id="features" class="tab-content" style="display:none; padding:10px 0;">
+    <p>{{ product.features|default:"No features available." }}</p>
+  </div>
+
+  <div id="warranty" class="tab-content" style="display:none; padding:10px 0;">
+    <p>{{ product.warranty|default:"No warranty information." }}</p>
+  </div>
+
+  <div id="specs" class="tab-content" style="display:none; padding:10px 0;">
+    <ul>
+      {% if product.color %}<li><strong>Color:</strong> {{ product.color }}</li>{% endif %}
+      {% if product.size %}<li><strong>Size:</strong> {{ product.size }}</li>{% endif %}
+      {% if product.weight %}<li><strong>Weight:</strong> {{ product.weight }} kg</li>{% endif %}
+      <li><strong>Price:</strong> ₹{{ product.price }}</li>
+      <li><strong>Stock:</strong> {{ product.stock }}</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+function showTab(tabName) {
+  var tabs = document.getElementsByClassName('tab-content');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].style.display = 'none';
+  }
+  document.getElementById(tabName).style.display = 'block';
+}
+</script>
+
 {% endblock %}
