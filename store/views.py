@@ -2,6 +2,22 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Product, CartItem, Order, OrderItem
 
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            next_url = request.GET.get('next', 'home')
+            return redirect(next_url)
+        else:
+            return render(request, 'store/login.html', {'error': 'Invalid credentials'})
+    return render(request, 'store/login.html')
+
 # Home / Product list
 def home(request):
     products = Product.objects.all()

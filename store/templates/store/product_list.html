@@ -1,14 +1,14 @@
-{% load static %}
-<link rel="stylesheet" href="{% static 'store/css/style.css' %}">
 {% extends 'store/base.html' %}
+{% load static %}
+
 {% block content %}
 <h2>Products</h2>
 <ul>
   {% for product in products %}
     <li>
-      <a href="/product/{{ product.slug }}/">{{ product.name }}</a>
+      <a href="{% url 'product_detail' product.slug %}">{{ product.name }}</a>
       - ₹{{ product.price }}
-      <a href="/cart/add/{{ product.id }}/">Add to cart</a>
+      <a href="{% url 'add_to_cart' product.id %}">Add to cart</a>
     </li>
   {% endfor %}
 </ul>
