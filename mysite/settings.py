@@ -5,8 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
 SECRET_KEY = "django-insecure-@kn(-0q39!)i2)ud+^8yf-*oy6(aw$=1l1@u(wcvxdqu9)2)o4"
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
+LOGIN_URL = '/login/'
 
 
 
