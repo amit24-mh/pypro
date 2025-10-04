@@ -63,3 +63,11 @@ th, td {
     padding: 10px;
     text-align: left;
 }
+.error-msg {
+    color: red;
+}
+
+.success-msg {
+    color: green;
+}
+

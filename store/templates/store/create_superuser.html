@@ -1,0 +1,27 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<h2>Create Superuser</h2>
+
+{% if messages %}
+  {% for message in messages %}
+    <p class="{% if message.tags == 'error' %}error-msg{% else %}success-msg{% endif %}">
+      {{ message }}
+    </p>
+  {% endfor %}
+{% endif %}
+
+<form method="POST">
+  {% csrf_token %}
+  <label>Username:</label>
+  <input type="text" name="username" required><br><br>
+
+  <label>Email:</label>
+  <input type="email" name="email"><br><br>
+
+  <label>Password:</label>
+  <input type="password" name="password" required><br><br>
+
+  <button type="submit">Create Superuser</button>
+</form>
+{% endblock %}

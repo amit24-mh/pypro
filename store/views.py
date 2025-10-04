@@ -2,10 +2,32 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Product, CartItem, Order, OrderItem
 
+from django.contrib.auth.models import User
+from django.contrib import messages
+
+def create_superuser_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists!")
+        else:
+            User.objects.create_superuser(username=username, email=email, password=password)
+            messages.success(request, f"Superuser '{username}' created successfully!")
+
+    return render(request, 'store/create_superuser.html')
+
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('home')  # already logged in, go to homepage
+ 
+    
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -22,6 +44,13 @@ def user_login(request):
 def home(request):
     products = Product.objects.all()
     return render(request, 'store/home.html', {'products': products})
+
+from django.contrib.auth import logout  # make sure this import is at the top
+
+# Logout view
+def user_logout(request):
+    logout(request)
+    return redirect('login')
 
 def product_list(request):
     products = Product.objects.all()
