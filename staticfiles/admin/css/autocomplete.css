@@ -1,3 +1,15 @@
+:root {
+  --body-bg: #ffffff;          /* background color */
+  --body-fg: #000000;          /* text color */
+  --border-color: #cccccc;     /* border color */
+  --body-quiet-color: #999999; /* placeholder / secondary text */
+  --darkened-bg: #f0f0f0;      /* disabled backgrounds */
+  --selected-bg: #e6f7ff;      /* selected option background */
+  --primary: #0d6efd;          /* primary color */
+  --primary-fg: #ffffff;       /* text on primary color */
+  --error-fg: #ff0000;         /* error color */
+}
+
 select.admin-autocomplete {
     width: 20em;
 }
@@ -28,11 +40,27 @@ select.admin-autocomplete {
     padding: 0;
 }
 
-.select2-container--admin-autocomplete .select2-selection--single {
-    background-color: var(--body-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+.select2-container--admin-autocomplete .select2-search--inline .select2-search__field {
+    background: transparent;
+    color: var(--body-fg);
+    border: none;
+    outline: 0;
+    box-shadow: none;
+    -webkit-appearance: none;  /* Chrome, Safari */
+    -moz-appearance: none;     /* Firefox */
+    appearance: none;          /* Standard */
 }
+.select2-container--admin-autocomplete .select2-search--inline .select2-search__field {
+    background: transparent;
+    color: var(--body-fg);
+    border: none;
+    outline: 0;
+    box-shadow: none;
+    -webkit-appearance: none;  /* Chrome, Safari */
+    -moz-appearance: none;     /* Firefox */
+    appearance: none;          /* Standard */
+}
+
 
 .select2-container--admin-autocomplete .select2-selection--single .select2-selection__rendered {
     color: var(--body-fg);
@@ -89,7 +117,7 @@ select.admin-autocomplete {
 }
 
 .select2-container--admin-autocomplete.select2-container--open .select2-selection--single .select2-selection__arrow b {
-    border-color: transparent transparent #888 transparent;
+    border-color: transparent transparent #7d0707 transparent;
     border-width: 0 4px 5px 4px;
 }
 
@@ -276,4 +304,9 @@ select.admin-autocomplete {
 
 .errors .select2-selection {
     border: 1px solid var(--error-fg);
+}
+input, select, textarea, button {
+    -webkit-appearance: none; /* Chrome, Safari, Opera */
+    -moz-appearance: none;    /* Firefox */
+    appearance: none;         /* Standard */
 }

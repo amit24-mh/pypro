@@ -1,0 +1,12 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Customer Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ user.username }}!</h1>
+<p>This is your customer dashboard.</p>
+<a href="{% url 'home' %}">Browse Products</a>
+<a href="{% url 'view_cart' %}">View Cart</a>
+<a href="{% url 'order_list' %}">My Orders</a>
+{% endblock %}
+

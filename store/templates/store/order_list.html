@@ -1,12 +1,98 @@
 {% extends 'store/base.html' %}
+{% load static %}
 
 {% block content %}
-<h1>Your Orders</h1>
-<ul>
+<style>
+  body {
+    background-color: #f1f3f6;
+  }
+  .orders-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  .order-card {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .order-header h3 {
+    margin: 0;
+    color: #2874f0;
+  }
+  .order-status {
+    color: green;
+    font-weight: bold;
+  }
+  .order-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+  .order-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-right: 15px;
+    border-radius: 8px;
+  }
+  .item-details {
+    flex: 1;
+  }
+  .item-details h4 {
+    margin: 0;
+    font-size: 16px;
+  }
+  .item-details p {
+    margin: 3px 0;
+    color: #555;
+  }
+  .total-amount {
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+  }
+</style>
+
+<div class="orders-container">
+  <h2>Your Orders</h2>
+
+  {% if orders %}
     {% for order in orders %}
-        <li>Order #{{ order.id }} - {{ order.total_amount }} - {{ order.status }}</li>
-    {% empty %}
-        <li>No orders yet.</li>
+      <div class="order-card">
+        <div class="order-header">
+          <h3>Order #{{ order.id }}</h3>
+          <span class="order-status">{{ order.status }}</span>
+        </div>
+
+        {% for item in order.orderitem_set.all %}
+          <div class="order-item">
+            <img src="{{ item.product.image.url|default_if_none:'/static/images/logo.png' }}" alt="{{ item.product.name }}">
+            <div class="item-details">
+              <h4>{{ item.product.name }}</h4>
+              <p>Qty: {{ item.quantity }}</p>
+              <p>Price: ₹{{ item.price }}</p>
+            </div>
+          </div>
+        {% endfor %}
+
+        <p class="total-amount">Total: ₹{{ order.total_amount }}</p>
+      </div>
     {% endfor %}
-</ul>
+  {% else %}
+    <p>No orders yet.</p>
+  {% endif %}
+</div>
 {% endblock %}

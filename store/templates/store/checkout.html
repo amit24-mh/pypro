@@ -1,23 +1,160 @@
 {% extends 'store/base.html' %}
 {% load static %}
+
 {% block content %}
 <h2>Checkout</h2>
-{% if cart_items %}
-<ul>
-  {% for item in cart_items %}
-    <li>{{ item.product.name }} x {{ item.quantity }} = ₹{{ item.subtotal }}</li>
-  {% endfor %}
-</ul>
-<p>Total: ₹{{ total }}</p>
 
-<form method="post">
-  {% csrf_token %}
-  <label>Full Name:</label><input type="text" name="full_name" required><br>
-  <label>Address:</label><textarea name="address" required></textarea><br>
-  <label>Phone:</label><input type="text" name="phone" required><br>
-  <button type="submit">Place Order</button>
-</form>
+<!-- Flash messages -->
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if cart_items %}
+<div class="checkout-container">
+    <!-- Shipping Details Form -->
+    <div class="checkout-form">
+        <h3>Shipping Details</h3>
+        <form method="post">
+            {% csrf_token %}
+            
+            <label for="full_name">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required><br><br>
+
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" placeholder="Enter your address" required></textarea><br><br>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required><br><br>
+
+            <button type="submit" class="place-order-btn">Place Order</button>
+        </form>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="checkout-summary">
+        <h3>Order Summary</h3>
+        <ul>
+            {% for item in cart_items %}
+            <li>
+                {{ item.product.name }} x {{ item.quantity }} 
+                <span>₹{{ item.subtotal }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <p><strong>Total: ₹{{ total }}</strong></p>
+    </div>
+</div>
+
 {% else %}
 <p>Your cart is empty.</p>
 {% endif %}
+
+<!-- CSS -->
+<style>
+.checkout-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.checkout-form {
+    flex: 2;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.checkout-form h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.checkout-form label {
+    font-weight: bold;
+}
+
+.checkout-form input,
+.checkout-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.place-order-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #2874f0;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.place-order-btn:hover {
+    background-color: #0b5ed7;
+}
+
+.checkout-summary {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #fdfdfd;
+    height: fit-content;
+}
+
+.checkout-summary h3 {
+    margin-top: 0;
+}
+
+.checkout-summary ul {
+    list-style: none;
+    padding: 0;
+}
+
+.checkout-summary li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+/* Flash messages */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+.messages li {
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checkout-container {
+        flex-direction: column;
+    }
+}
+</style>
+
 {% endblock %}

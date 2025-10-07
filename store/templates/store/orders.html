@@ -2,17 +2,145 @@
 {% load static %}
 
 {% block content %}
-<h2>Your Orders</h2>
-{% if orders %}
-<ul>
-  {% for order in orders %}
-    <li>
-      Order #{{ order.id }} - ₹{{ order.total_amount }} - {{ order.status }}
-      ({{ order.created_at|date:"d M Y H:i" }})
-    </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>You have no orders yet.</p>
-{% endif %}
+<div class="container">
+    <h2 class="page-title">Your Orders</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <div><strong>Order #{{ order.id }}</strong></div>
+                <div>{{ order.created_at|date:"d M Y H:i" }}</div>
+                <div><strong>Total: ₹{{ order.total_amount }}</strong></div>
+            </div>
+
+            <div class="order-items">
+                {% for item in order.items.all %}
+                <div class="item">
+                  <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'images/default-product.png' %}{% endif %}" alt="{{ item.product.name }}">
+
+                    <div class="item-details">
+                        <h4>{{ item.product.name }}</h4>
+                        <p>Quantity: {{ item.quantity }}</p>
+                    </div>
+                    <div class="item-price">₹{{ item.total_price }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="order-status">
+                <div class="status-step {% if order.status in 'Placed,Shipped,Delivered' %}active{% endif %}">Placed</div>
+                <div class="status-step {% if order.status in 'Shipped,Delivered' %}active{% endif %}">Shipped</div>
+                <div class="status-step {% if order.status == 'Delivered' %}active{% endif %}">Delivered</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>You have no orders yet.</p>
+    {% endif %}
+</div>
+
+<style>
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    font-family: 'Roboto', sans-serif;
+}
+.page-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+.order-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.order-header div {
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+.order-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+.item-details h4 {
+    margin: 0 0 5px;
+    font-size: 1rem;
+}
+.item-details p {
+    margin: 0;
+    color: #555;
+}
+.item-price {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+.order-status {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.status-step {
+    flex: 1;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #888;
+    position: relative;
+}
+.status-step::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #ddd;
+    top: 50%;
+    left: 0;
+    z-index: -1;
+}
+.status-step.active {
+    color: #2874f0;
+}
+.status-step.active::before {
+    background-color: #2874f0;
+}
+@media(max-width:768px){
+    .item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .item img {
+        width: 100%;
+        max-width: 150px;
+    }
+    .order-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+</style>
 {% endblock %}

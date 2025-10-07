@@ -1,16 +1,169 @@
 {% extends 'store/base.html' %}
 {% load static %}
+
 {% block content %}
-<h2>Your Cart</h2>
+<h2>My Cart</h2>
+
+<!-- Flash messages -->
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 {% if cart_items %}
-<ul>
-  {% for item in cart_items %}
-    <li>{{ item.product.name }} x {{ item.quantity }} = ₹{{ item.subtotal }}</li>
-  {% endfor %}
-</ul>
-<p>Total: ₹{{ total }}</p>
-<a href="{% url 'checkout' %}">Proceed to Checkout</a>
+<div class="cart-container">
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+            {% if item.product.image %}
+            <div class="item-img">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            </div>
+            {% endif %}
+            <div class="item-details">
+                <h3>{{ item.product.name }}</h3>
+                <p><strong>Price:</strong> ₹{{ item.product.price }}</p>
+                <p>
+                    <strong>Quantity:</strong>
+                    <a href="{% url 'add_to_cart' item.product.id %}" class="quantity-btn">+</a>
+                    {{ item.quantity }}
+                    <a href="{% url 'remove_from_cart' item.id %}" class="quantity-btn">-</a>
+                </p>
+                <p><strong>Subtotal:</strong> ₹{{ item.subtotal }}</p>
+                <a href="{% url 'remove_from_cart' item.id %}" class="btn remove-btn">Remove</a>
+            </div>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+
+    <div class="cart-summary">
+        <h3>Cart Summary</h3>
+        <p><strong>Total:</strong> ₹{{ total }}</p>
+        <a href="{% url 'checkout' %}" class="btn checkout-btn">Proceed to Checkout</a>
+    </div>
+</div>
+
 {% else %}
 <p>Your cart is empty.</p>
 {% endif %}
+
+<!-- Cart CSS -->
+<style>
+.cart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.cart-items {
+    flex: 2;
+}
+
+.cart-summary {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    height: fit-content;
+}
+
+.cart-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.item-img img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-details h3 {
+    margin: 0 0 5px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-top: 5px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #2874f0;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background-color: #0b5ed7;
+}
+
+.remove-btn {
+    background-color: #dc3545;
+}
+
+.remove-btn:hover {
+    background-color: #a71d2a;
+}
+
+.checkout-btn {
+    width: 100%;
+    text-align: center;
+}
+
+.quantity-btn {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 0 5px;
+    background-color: #6c757d;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.quantity-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Messages */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 15px;
+}
+.messages li {
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cart-container {
+        flex-direction: column;
+    }
+    .cart-summary {
+        width: 100%;
+    }
+}
+</style>
+
 {% endblock %}
